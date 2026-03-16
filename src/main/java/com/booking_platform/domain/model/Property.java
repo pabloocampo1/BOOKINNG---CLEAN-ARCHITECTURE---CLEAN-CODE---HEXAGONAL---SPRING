@@ -5,6 +5,7 @@ import com.booking_platform.domain.exceptions.property.PropertyStateException;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class Property {
@@ -28,6 +29,8 @@ public class Property {
     private List<String> photos;
 
     private PropertyStatus propertyStatus;
+    private double rating;
+    private Integer totalReviews;
 
     public Property(Long propertyId,
                     String title,
@@ -43,7 +46,9 @@ public class Property {
                     Set<Amenity> amenities,
                     List<String> houseRules,
                     String cancellationPolicy,
-                    List<String> photos) {
+                    List<String> photos ,
+                    double rating,
+                    Integer totalReviews) {
         this.propertyId = propertyId;
         this.title = title;
         this.description = description;
@@ -61,6 +66,30 @@ public class Property {
         this.userId = userId;
         this.propertyStatus = PropertyStatus.IN_REVIEW;
         this.isPublished = false;
+        this.rating = rating;
+        this.totalReviews = totalReviews;
+    }
+
+
+    public void addStar(int stars) {
+        if(stars < 0 || stars > 5){
+            // create a new exception
+            return;
+        }
+
+        double totalStars = (this.rating * this.totalReviews) + stars;
+        this.totalReviews++;
+        this.rating = this.rating / totalStars;
+
+        this.rating = Math.round(this.rating * 10.0) / 10.0;
+
+    }
+
+
+    public void checkOwnerProperty(Long userId){
+        if(!Objects.equals(userId, this.userId)){
+            throw new IllegalArgumentException("No estas permitido para esta accion.");
+        }
     }
 
 
@@ -83,6 +112,8 @@ public class Property {
 
         this.propertyStatus = PropertyStatus.INACTIVE;
     }
+
+    
 
     public void published(){
         this.isPublished = true;
@@ -145,8 +176,12 @@ public class Property {
         this.userId = userId;
     }
 
+
+
     ///   GETTER AND SETTER
     ///
+
+
 
 
 
@@ -271,8 +306,17 @@ public class Property {
     }
 
 
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
 
+    public Integer getTotalReviews() {
+        return totalReviews;
+    }
 
+    public void setTotalReviews(Integer totalReviews) {
+        this.totalReviews = totalReviews;
+    }
 
     public String getPropertySummary() {
         return String.format(

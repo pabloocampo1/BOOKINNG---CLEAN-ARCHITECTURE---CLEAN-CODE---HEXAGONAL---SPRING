@@ -50,6 +50,10 @@ public class PropertyEntity {
     private int beds;
     private int bathrooms;
 
+    private double rating = 0.0;
+
+    private Integer totalReviews = 0;
+
     @Column(name = "is_published")
     private boolean isPublished;
 

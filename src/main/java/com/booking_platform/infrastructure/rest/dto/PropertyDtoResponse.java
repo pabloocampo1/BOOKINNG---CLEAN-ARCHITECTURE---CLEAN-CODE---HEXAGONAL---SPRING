@@ -16,6 +16,8 @@ public record PropertyDtoResponse(
         Set<String> amenities,
         List<String> photos,
         String propertyStatus,
-        Long userId
+        Long userId   ,
+        double rating,
+        Integer totalReviews
 ) {
 }
