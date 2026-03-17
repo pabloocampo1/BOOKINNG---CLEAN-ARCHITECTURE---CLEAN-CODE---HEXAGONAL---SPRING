@@ -2,6 +2,7 @@ package com.booking_platform.infrastructure.exception.handler;
 import com.booking_platform.domain.exceptions.TokenChangePasswordExpired;
 import com.booking_platform.domain.exceptions.UserException.InvalidEmailException;
 import com.booking_platform.domain.exceptions.UserException.PasswordUserException;
+import com.booking_platform.domain.exceptions.property.AvailabilityRangeNotAvailableException;
 import com.booking_platform.domain.exceptions.property.InvalidLocationException;
 import com.booking_platform.domain.exceptions.property.NoAccessToManageProperties;
 import com.booking_platform.infrastructure.exception.ErrorResponse;
@@ -27,12 +28,11 @@ public class GlobalHandlerException {
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception e) {
 
         e.printStackTrace();
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .error("Internal Server Error")
-                .message("Ups! Ha ocurrido un error inesperado en nuestros servidores. Por favor, inténtalo más tarde.")
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setError("Internal Server Error");
+        errorResponse.setMessage("Ups! Ha ocurrido un error inesperado en nuestros servidores. Por favor, inténtalo más tarde.");
+        errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -42,12 +42,11 @@ public class GlobalHandlerException {
             EntityNotFoundException.class
     )
     public ResponseEntity<ErrorResponse> handleElementsNotFound(Exception e){
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .error("Not found.")
-                .message(e.getMessage())
-                .status(HttpStatus.NOT_FOUND.value())
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setError("Not found.");
+        errorResponse.setMessage(e.getMessage());
+        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
 
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
@@ -59,18 +58,18 @@ public class GlobalHandlerException {
             PasswordUserException.class,
             NoAccessToManageProperties.class,
             InvalidEmailException.class,
+            AvailabilityRangeNotAvailableException.class,
             TokenChangePasswordExpired.class
     })
     public ResponseEntity<ErrorResponse> handleBadRequestException(Exception e){
         Throwable actualException = (e.getCause() != null && e instanceof RuntimeException)
                 ? e.getCause() : e;
 
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .error("Bad Request")
-                .message(actualException.getMessage())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setError("Bad Request");
+        errorResponse.setMessage(actualException.getMessage());
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -80,36 +79,32 @@ public class GlobalHandlerException {
         // Aquí puedes lógica para revisar si el mensaje contiene "Duplicate entry"
         String customMessage = "El recurso que intentas crear ya existe (DNI o Email duplicado).";
 
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.CONFLICT.value())
-                .error("Conflict")
-              
-                .message(customMessage)
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.CONFLICT.value());
+        errorResponse.setError("Conflict");
+        errorResponse.setMessage(customMessage);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse>  handleAuthenticationException(AuthenticationException e){
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.UNAUTHORIZED.value())
-                .error("Inautorizado")
-                .message("Credenciales invalidas")
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        errorResponse.setError("Inautorizado");
+        errorResponse.setMessage("Credenciales invalidas");
 
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException e){
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .error("Bad request")
-                .message(e.getMessage())
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setError("Bad request");
+        errorResponse.setMessage(e.getMessage());
 
                 return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -127,12 +122,11 @@ public class GlobalHandlerException {
             message = message.substring(message.lastIndexOf(":") + 1).trim();
         }
 
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .error("Bad Request - Input Error")
-                .message(message)
-                .status(HttpStatus.BAD_REQUEST.value())
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setError("Bad Request - Input Error");
+        errorResponse.setMessage(message);
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

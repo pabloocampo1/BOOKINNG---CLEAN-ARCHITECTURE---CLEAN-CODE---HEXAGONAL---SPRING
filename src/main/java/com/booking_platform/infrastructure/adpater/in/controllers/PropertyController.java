@@ -2,16 +2,17 @@ package com.booking_platform.infrastructure.adpater.in.controllers;
 
 import com.booking_platform.application.port.in.propertyUseCases.*;
 import com.booking_platform.domain.model.Property;
+import com.booking_platform.infrastructure.rest.dto.AvailabilityBlockDtoRequest;
+import com.booking_platform.infrastructure.rest.dto.AvailabilityDtoResponse;
 import com.booking_platform.infrastructure.rest.dto.PropertyDtoRequest;
 import com.booking_platform.infrastructure.rest.dto.PropertyDtoResponse;
+import com.booking_platform.infrastructure.rest.mapperRest.AvailabilityMapperRest;
 import com.booking_platform.infrastructure.rest.mapperRest.PropertyMapperRest;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/property")
@@ -22,20 +23,24 @@ public class PropertyController {
     private final GetAllPropertiesByCountryUseCase getAllPropertiesByCountryUseCase;
     private final DeletePropertyUseCase deletePropertyUseCase;
     private final PropertyMapperRest propertyMapperRest;
+    private final AvailabilityMapperRest availabilityMapperRest;
     private final PublishPropertyUseCase publishPropertyUseCase;
     private final UnpublishPropertyUseCase unpublishPropertyUseCase;
     private final GetMyPropertiesUseCase getMyPropertiesUseCase;
+    private final CreateAvailabilityBlockUseCase createAvailabilityBlockUseCase;
 
 
-    public PropertyController(CreatePropertyUseCase createPropertyUseCase, GetAllPropertiesByCityUseCase getAllPropertiesByCityUseCase, GetAllPropertiesByCountryUseCase getAllPropertiesByCountryUseCase, DeletePropertyUseCase deletePropertyUseCase, PropertyMapperRest propertyMapperRest, PublishPropertyUseCase publishPropertyUseCase, UnpublishPropertyUseCase unpublishPropertyUseCase, GetMyPropertiesUseCase getMyPropertiesUseCase) {
+    public PropertyController(CreatePropertyUseCase createPropertyUseCase, GetAllPropertiesByCityUseCase getAllPropertiesByCityUseCase, GetAllPropertiesByCountryUseCase getAllPropertiesByCountryUseCase, DeletePropertyUseCase deletePropertyUseCase, PropertyMapperRest propertyMapperRest, AvailabilityMapperRest availabilityMapperRest, PublishPropertyUseCase publishPropertyUseCase, UnpublishPropertyUseCase unpublishPropertyUseCase, GetMyPropertiesUseCase getMyPropertiesUseCase, CreateAvailabilityBlockUseCase createAvailabilityBlockUseCase) {
         this.createPropertyUseCase = createPropertyUseCase;
         this.getAllPropertiesByCityUseCase = getAllPropertiesByCityUseCase;
         this.getAllPropertiesByCountryUseCase = getAllPropertiesByCountryUseCase;
         this.deletePropertyUseCase = deletePropertyUseCase;
         this.propertyMapperRest = propertyMapperRest;
+        this.availabilityMapperRest = availabilityMapperRest;
         this.publishPropertyUseCase = publishPropertyUseCase;
         this.unpublishPropertyUseCase = unpublishPropertyUseCase;
         this.getMyPropertiesUseCase = getMyPropertiesUseCase;
+        this.createAvailabilityBlockUseCase = createAvailabilityBlockUseCase;
     }
 
 
@@ -98,6 +103,18 @@ public class PropertyController {
 
         String currentUser = authentication.getName();
         return new ResponseEntity<>(this.getMyPropertiesUseCase.execute(page, size ,currentUser).map(this.propertyMapperRest::toResponse), HttpStatus.OK);
+    }
+
+    @PostMapping("/{propertyId}/availability/block")
+    public ResponseEntity<AvailabilityDtoResponse> blockAvailability(
+            @PathVariable("propertyId") Long propertyId,
+            @RequestBody AvailabilityBlockDtoRequest dto,
+            Authentication authentication
+    ) {
+        String currentUser = authentication.getName();
+        var availability = this.availabilityMapperRest.toBlockedModel(propertyId, dto);
+        var saved = this.createAvailabilityBlockUseCase.execute(currentUser, availability);
+        return new ResponseEntity<>(this.availabilityMapperRest.toResponse(saved), HttpStatus.CREATED);
     }
 
 

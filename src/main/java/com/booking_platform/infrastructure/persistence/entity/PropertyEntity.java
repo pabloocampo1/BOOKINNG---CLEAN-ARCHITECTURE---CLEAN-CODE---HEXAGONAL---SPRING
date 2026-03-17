@@ -22,6 +22,7 @@ public class PropertyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "property_id")
     private Long propertyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
