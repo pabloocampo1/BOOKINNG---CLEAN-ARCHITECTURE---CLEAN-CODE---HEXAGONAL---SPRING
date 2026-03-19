@@ -1,6 +1,5 @@
 package com.booking_platform.domain.model;
 
-import com.booking_platform.domain.exceptions.DomainException;
 import com.booking_platform.domain.exceptions.booking.InvalidBookingDatesException;
 import com.booking_platform.domain.exceptions.booking.LimitGuestsException;
 

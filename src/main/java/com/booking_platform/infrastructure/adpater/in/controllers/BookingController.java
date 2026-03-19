@@ -1,22 +1,19 @@
 package com.booking_platform.infrastructure.adpater.in.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.booking_platform.application.port.in.bookingUseCases.CreateNewBookingUseCase;
-import com.booking_platform.application.port.in.bookingUseCases.ProcessBookingWithPaymentUseCase;
-import com.booking_platform.infrastructure.rest.dto.BookingDtoRequest;
-import com.booking_platform.infrastructure.rest.dto.BookingDtoResponse;
-import com.booking_platform.infrastructure.rest.dto.CreateBookingWithPaymentDtoRequest;
-import com.booking_platform.infrastructure.rest.mapperRest.BookingMapperRest;
-
-import jakarta.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.booking_platform.application.port.in.bookingUseCases.ProcessBookingWithPaymentUseCase;
+import com.booking_platform.infrastructure.rest.dto.BookingDtoResponse;
+import com.booking_platform.infrastructure.rest.dto.CreateBookingWithPaymentDtoRequest;
+import com.booking_platform.infrastructure.rest.mapperRest.BookingMapperRest;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/bookings")

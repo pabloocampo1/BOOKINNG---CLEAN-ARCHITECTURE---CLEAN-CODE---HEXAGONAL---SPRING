@@ -1,8 +1,8 @@
 package com.booking_platform.infrastructure.adpater.in.cron;
 
-import com.booking_platform.application.port.out.ChangePasswordRepository;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.booking_platform.application.port.out.ChangePasswordRepository;
 
 @Component
 public class PasswordResetCodeCleanUpScheduler {
@@ -13,10 +13,9 @@ public class PasswordResetCodeCleanUpScheduler {
         this.changePasswordRepository = changePasswordRepository;
     }
 
-  
-  // @Scheduled(cron = "0 */2 * * * *")
-    public void deleteAllCodeExpired(){
-       System.out.println("Se ejecuto ejejej");
+    // @Scheduled(cron = "0 */2 * * * *")
+    public void deleteAllCodeExpired() {
+        System.out.println("Se ejecuto ejejej");
         this.changePasswordRepository.deleteAllExpirated();
     }
 }

@@ -1,20 +1,16 @@
 package com.booking_platform.application.service.BookingServices;
 
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import com.booking_platform.application.port.in.bookingUseCases.CreateNewBookingUseCase;
 import com.booking_platform.application.port.out.AvailabilityRepository;
 import com.booking_platform.application.port.out.BookingRepository;
-import com.booking_platform.application.port.out.EventPublisher;
-import com.booking_platform.application.port.out.PropertyRepository;
-import com.booking_platform.application.port.out.UserRepository;
-import com.booking_platform.domain.Event.CreateBookingEvent;
+
 import com.booking_platform.domain.exceptions.booking.InvalidBookingDatesException;
 import com.booking_platform.domain.model.Availability;
 import com.booking_platform.domain.model.AvailabilityType;
 import com.booking_platform.domain.model.Booking;
-import com.booking_platform.domain.model.BookingStatus;
+
 import com.booking_platform.domain.model.Property;
 import com.booking_platform.domain.model.Role;
 import com.booking_platform.domain.model.User;

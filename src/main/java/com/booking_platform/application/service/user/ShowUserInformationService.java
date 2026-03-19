@@ -4,7 +4,7 @@ import com.booking_platform.application.port.in.userUseCase.ShowUserInformationU
 import com.booking_platform.application.port.out.UserRepository;
 import com.booking_platform.domain.model.User;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +18,7 @@ public class ShowUserInformationService implements ShowUserInformationUseCase {
 
     @Override
     public User execute(Long userId) {
-        return this.userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("No se encontro el elemento."));
+        return this.userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontro el elemento."));
     }
 }

@@ -4,8 +4,6 @@ import com.booking_platform.domain.exceptions.TokenChangePasswordExpired;
 
 import java.time.LocalDateTime;
 
-import com.booking_platform.domain.Event.DeleteTokenChangeEmailEvent;
-
 public class ChangeEmailCodeModel {
 
     private Long id;
@@ -13,7 +11,6 @@ public class ChangeEmailCodeModel {
     private String email;
     private LocalDateTime expirationDate;
     private LocalDateTime createdAt;
-
 
     public ChangeEmailCodeModel(Long id, Integer code, String email) {
         this.id = id;
@@ -27,15 +24,12 @@ public class ChangeEmailCodeModel {
         this.expirationDate = LocalDateTime.now().plusMinutes(2);
     }
 
-    public void validateTokenExpiration(){
-        if(this.expirationDate.isBefore(LocalDateTime.now())){
+    public void validateTokenExpiration() {
+        if (this.expirationDate.isBefore(LocalDateTime.now())) {
 
             throw new TokenChangePasswordExpired();
         }
     }
-
-
-
 
     public Long getId() {
         return id;

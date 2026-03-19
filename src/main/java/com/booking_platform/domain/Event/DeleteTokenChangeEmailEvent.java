@@ -1,14 +1,11 @@
 package com.booking_platform.domain.Event;
 
-import org.springframework.data.domain.DomainEvents;
-
 import java.time.LocalDateTime;
 
 public class DeleteTokenChangeEmailEvent implements EventDomain {
 
     private Long id;
     private LocalDateTime createdAt;
-
 
     public DeleteTokenChangeEmailEvent(Long id) {
         this.id = id;
@@ -21,7 +18,7 @@ public class DeleteTokenChangeEmailEvent implements EventDomain {
 
     @Override
     public LocalDateTime occurredOn() {
-        return this.createdAt ;
+        return this.createdAt;
     }
 
     @Override

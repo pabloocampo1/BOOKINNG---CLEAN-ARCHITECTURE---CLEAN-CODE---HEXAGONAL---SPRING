@@ -1,11 +1,9 @@
 package com.booking_platform.domain.model;
 
+import java.time.LocalDateTime;
+
 import com.booking_platform.domain.exceptions.UserException.InvalidEmailException;
 import com.booking_platform.domain.exceptions.UserException.PasswordUserException;
-
-import java.time.LocalDateTime;
-import java.util.Base64;
-import java.util.List;
 
 public class User {
     private Long userId;

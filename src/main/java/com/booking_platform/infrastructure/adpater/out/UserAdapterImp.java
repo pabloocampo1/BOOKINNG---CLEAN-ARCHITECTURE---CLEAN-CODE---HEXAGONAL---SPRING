@@ -5,7 +5,6 @@ import com.booking_platform.domain.model.User;
 import com.booking_platform.infrastructure.persistence.Mapper.UserMapper;
 import com.booking_platform.infrastructure.persistence.entity.UserEntity;
 import com.booking_platform.infrastructure.persistence.repositoryJpa.UserJpaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,8 +12,8 @@ import java.util.Optional;
 @Repository
 public class UserAdapterImp implements UserRepository {
 
-   private final UserJpaRepository userJpaRepository;
-   private final UserMapper userMapper;
+    private final UserJpaRepository userJpaRepository;
+    private final UserMapper userMapper;
 
     public UserAdapterImp(UserJpaRepository userJpaRepository, UserMapper userMapper) {
         this.userJpaRepository = userJpaRepository;
@@ -30,7 +29,7 @@ public class UserAdapterImp implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-       return userJpaRepository.findById(id).map(this.userMapper::toModel);
+        return userJpaRepository.findById(id).map(this.userMapper::toModel);
     }
 
     @Override

@@ -1,22 +1,30 @@
 package com.booking_platform.infrastructure.persistence.entity;
 
-import com.booking_platform.domain.model.Property;
-import com.booking_platform.domain.model.Role;
-import jakarta.persistence.*;
-import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.booking_platform.domain.model.Role;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
-@Table(name = "users",
-indexes = {
+@Table(name = "users", indexes = {
         @Index(name = "email", columnList = "email"),
         @Index(name = "username", columnList = "username")
 })
-
-
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -43,8 +51,7 @@ public class UserEntity {
 
     private LocalDateTime createAT;
 
-
-    @Column( nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Column(unique = true, nullable = false)
@@ -56,6 +63,6 @@ public class UserEntity {
     @Column(nullable = false)
     private Role role;
 
-   @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private List<PropertyEntity> properties;
 }

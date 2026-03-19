@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 import com.booking_platform.application.port.in.bookingUseCases.CreateNewBookingUseCase;
 import com.booking_platform.application.port.in.bookingUseCases.ProcessBookingWithPaymentUseCase;
 import com.booking_platform.application.port.in.bookingUseCases.ProcessPaymentUseCase;
-import com.booking_platform.application.port.out.BookingRepository;
+
 import com.booking_platform.application.port.out.EventPublisher;
 import com.booking_platform.application.port.out.PropertyRepository;
 import com.booking_platform.application.port.out.UserRepository;
 import com.booking_platform.domain.Event.CreateBookingEvent;
 import com.booking_platform.domain.exceptions.DomainException;
-import com.booking_platform.domain.exceptions.booking.FailedPaymentException;
+
 import com.booking_platform.domain.model.Booking;
 import com.booking_platform.domain.model.BookingStatus;
 import com.booking_platform.domain.model.Property;

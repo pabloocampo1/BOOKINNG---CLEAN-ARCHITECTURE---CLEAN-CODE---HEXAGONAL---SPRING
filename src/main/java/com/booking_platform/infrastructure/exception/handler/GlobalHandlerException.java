@@ -1,32 +1,32 @@
 package com.booking_platform.infrastructure.exception.handler;
 
-import com.booking_platform.domain.exceptions.TokenChangePasswordExpired;
-import com.booking_platform.domain.exceptions.UserException.InvalidEmailException;
-import com.booking_platform.domain.exceptions.UserException.NoPermissionManagePropertyException;
-import com.booking_platform.domain.exceptions.UserException.PasswordUserException;
-import com.booking_platform.domain.exceptions.booking.InvalidBookingDatesException;
-import com.booking_platform.domain.exceptions.booking.FailedPaymentException;
-import com.booking_platform.domain.exceptions.booking.LimitGuestsException;
-import com.booking_platform.domain.exceptions.property.AvailabilityRangeNotAvailableException;
-import com.booking_platform.domain.exceptions.property.InvalidLocationException;
-import com.booking_platform.domain.exceptions.property.NoAccessToManageProperties;
-import com.booking_platform.infrastructure.exception.ErrorResponse;
-import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import org.apache.coyote.Response;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
+
+import com.booking_platform.domain.exceptions.TokenChangePasswordExpired;
+import com.booking_platform.domain.exceptions.UserException.InvalidEmailException;
+import com.booking_platform.domain.exceptions.UserException.NoPermissionManagePropertyException;
+import com.booking_platform.domain.exceptions.UserException.PasswordUserException;
+import com.booking_platform.domain.exceptions.booking.FailedPaymentException;
+import com.booking_platform.domain.exceptions.booking.InvalidBookingDatesException;
+import com.booking_platform.domain.exceptions.booking.LimitGuestsException;
+import com.booking_platform.domain.exceptions.property.AvailabilityRangeNotAvailableException;
+import com.booking_platform.domain.exceptions.property.InvalidLocationException;
+import com.booking_platform.domain.exceptions.property.NoAccessToManageProperties;
+import com.booking_platform.infrastructure.exception.ErrorResponse;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalHandlerException {
