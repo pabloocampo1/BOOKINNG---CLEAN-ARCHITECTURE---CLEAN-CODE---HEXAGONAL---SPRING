@@ -10,13 +10,16 @@ public class Availability {
     private LocalDate endDate;
     private AvailabilityType availabilityType; // BLOCKED OR BOOKING
 
-
-    public Availability(Long id, Long propertyId, LocalDate startDate, LocalDate endDate, AvailabilityType availabilityType) {
+    public Availability(Long id, Long propertyId, LocalDate startDate, LocalDate endDate,
+            AvailabilityType availabilityType) {
         this.id = id;
         this.propertyId = propertyId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.availabilityType = availabilityType;
+    }
+
+    public Availability() {
     }
 
     public Long getTotalNights() {
@@ -32,7 +35,6 @@ public class Availability {
 
         return !this.endDate.isBefore(this.startDate);
     }
-
 
     public Long getId() {
         return id;

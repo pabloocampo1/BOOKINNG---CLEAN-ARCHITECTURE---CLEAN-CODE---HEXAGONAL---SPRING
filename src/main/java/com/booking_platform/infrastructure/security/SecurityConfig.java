@@ -28,9 +28,8 @@ public class SecurityConfig {
     public SecurityConfig(CorsConfig corsConfig, JwtFilter jwtFilter) {
         this.corsConfig = corsConfig;
         this.jwtFilter = jwtFilter;
-        
-    }
 
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -42,8 +41,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> {
 
                     request.requestMatchers(HttpMethod.POST, "/api/v1/users/become-host").hasRole(ROLE_HOST);
+                    request.requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll();
                     request.requestMatchers(HttpMethod.POST, "/api/v1/property").hasRole(ROLE_HOST);
-                    request.requestMatchers(HttpMethod.POST, "/api/v1/property/*/availability/block").hasRole(ROLE_HOST);
+                    request.requestMatchers(HttpMethod.POST, "/api/v1/bookings").hasRole(ROLE_GUEST);
+                    request.requestMatchers(HttpMethod.POST, "/api/v1/property/*/availability/block")
+                            .hasRole(ROLE_HOST);
                     request.requestMatchers("/api/v1/auth/**").permitAll();
                     request.anyRequest().authenticated();
                 })

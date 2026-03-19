@@ -19,8 +19,8 @@ public class User {
     private String username;
     private boolean state;
 
-
-    public User( String name, String lastName, Long dni, String email, LocalDateTime createAt, String password, String username) {
+    public User(String name, String lastName, Long dni, String email, LocalDateTime createAt, String password,
+            String username) {
         this.validEmail(email);
         this.validatePassword(password);
 
@@ -35,61 +35,64 @@ public class User {
         this.state = true;
     }
 
-    public void validEmail(String email){
-       if(email.isBlank() || !email.contains("@")){
-          throw new InvalidEmailException();
-       }
+    public void validEmail(String email) {
+        if (email.isBlank() || !email.contains("@")) {
+            throw new InvalidEmailException();
+        }
     }
 
-    public void validatePassword(String password){
+    public void validatePassword(String password) {
 
-        if(password == null || password.isBlank()){
+        if (password == null || password.isBlank()) {
             throw new IllegalArgumentException("La contraseña es obligatoria");
         }
 
-        if(password.length() <= 8){
+        if (password.length() <= 8) {
             throw new PasswordUserException("La contraseña es demaciado corta.");
         }
 
-        if(!password.matches(".*[A-Z].*")){
-           throw new PasswordUserException("La contraseña debe de tener almenos una mayuscula");
+        if (!password.matches(".*[A-Z].*")) {
+            throw new PasswordUserException("La contraseña debe de tener almenos una mayuscula");
         }
 
-        if (!password.matches(".*\\d.*")){
-             throw new PasswordUserException("La contraseña debe de contener almenos un numero");
+        if (!password.matches(".*\\d.*")) {
+            throw new PasswordUserException("La contraseña debe de contener almenos un numero");
         }
 
-        if(!password.matches(".*[^a-zA-Z0-9].*")){
+        if (!password.matches(".*[^a-zA-Z0-9].*")) {
             throw new PasswordUserException("La contraseña debe de contener almenos un simbolo");
         }
 
     }
 
+    public String getFullName() {
+        return this.name + " " + this.lastName;
+    }
 
-    public void active(){
-        if(this.state){
+    public void active() {
+        if (this.state) {
             return;
         }
         this.state = true;
 
     }
-    
-    public void inactive(){
-        if(!this.state){
+
+    public void inactive() {
+        if (!this.state) {
             return;
         }
         this.state = false;
 
     }
 
-    public boolean canManageProperties(){
+    public boolean canManageProperties() {
         return role.equals(Role.HOST);
     }
 
-    public void becomeHost(){
-        if(!this.role.equals(Role.HOST)) this.role = Role.HOST;
+    public void becomeHost() {
+        if (!this.role.equals(Role.HOST))
+            this.role = Role.HOST;
     }
-
 
     public Long getUserId() {
         return userId;
@@ -171,10 +174,3 @@ public class User {
         this.state = state;
     }
 }
-
-
-
-
-
-
-

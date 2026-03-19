@@ -1,5 +1,6 @@
 package com.booking_platform.domain.model;
 
+import com.booking_platform.domain.exceptions.UserException.NoPermissionManagePropertyException;
 import com.booking_platform.domain.exceptions.property.MaxGuestException;
 import com.booking_platform.domain.exceptions.property.PropertyStateException;
 
@@ -22,7 +23,6 @@ public class Property {
     private int bathrooms;
     private boolean isPublished;
 
-
     private Set<Amenity> amenities;
     private List<String> houseRules;
     private String cancellationPolicy;
@@ -33,22 +33,22 @@ public class Property {
     private Integer totalReviews;
 
     public Property(Long propertyId,
-                    String title,
-                    String description,
-                    PropertyType type,
-                    Location location,
-                    BigDecimal pricePerNight,
-                    int maxGuests,
-                    int bedrooms,
-                    int beds,
-                    Long userId,
-                    int bathrooms,
-                    Set<Amenity> amenities,
-                    List<String> houseRules,
-                    String cancellationPolicy,
-                    List<String> photos ,
-                    double rating,
-                    Integer totalReviews) {
+            String title,
+            String description,
+            PropertyType type,
+            Location location,
+            BigDecimal pricePerNight,
+            int maxGuests,
+            int bedrooms,
+            int beds,
+            Long userId,
+            int bathrooms,
+            Set<Amenity> amenities,
+            List<String> houseRules,
+            String cancellationPolicy,
+            List<String> photos,
+            double rating,
+            Integer totalReviews) {
         this.propertyId = propertyId;
         this.title = title;
         this.description = description;
@@ -70,9 +70,8 @@ public class Property {
         this.totalReviews = totalReviews;
     }
 
-
     public void addStar(int stars) {
-        if(stars < 0 || stars > 5){
+        if (stars < 0 || stars > 5) {
             // create a new exception
             return;
         }
@@ -85,13 +84,21 @@ public class Property {
 
     }
 
-
-    public void checkOwnerProperty(Long userId){
-        if(!Objects.equals(userId, this.userId)){
-            throw new IllegalArgumentException("No estas permitido para esta accion.");
+    public void checkOwnerProperty(Long userId) {
+        if (!Objects.equals(userId, this.userId)) {
+            throw new NoPermissionManagePropertyException("No estas permitido para esta accion.");
         }
     }
 
+    public void checkIfCanBooking() {
+        if (!this.propertyStatus.equals(PropertyStatus.ACTIVE) || !this.isPublished) {
+            throw new IllegalStateException("La propiedad no esta disponible para reservar.");
+        }
+    }
+
+    public String getFullAddress() {
+        return String.format("%s, %s, %s", location.getCountry(), location.getCity(), location.getAddress());
+    }
 
     public void activate() {
         if (propertyStatus.equals(PropertyStatus.ACTIVE)) {
@@ -101,7 +108,7 @@ public class Property {
         this.propertyStatus = PropertyStatus.ACTIVE;
     }
 
-    public void changePropertyStatus(PropertyStatus propertyStatus){
+    public void changePropertyStatus(PropertyStatus propertyStatus) {
         this.propertyStatus = propertyStatus;
     }
 
@@ -113,16 +120,13 @@ public class Property {
         this.propertyStatus = PropertyStatus.INACTIVE;
     }
 
-    
-
-    public void published(){
+    public void published() {
         this.isPublished = true;
     }
 
     public void unpublished() {
         this.isPublished = false;
     }
-
 
     public void validateInformation() {
 
@@ -155,35 +159,29 @@ public class Property {
         }
     }
 
-
     public Long getPropertyId() {
         return propertyId;
     }
 
-    public BigDecimal calculatePrice(int nights){
-         return this.pricePerNight.multiply(BigDecimal.valueOf(nights));
+    public BigDecimal calculatePrice(int nights) {
+        return this.pricePerNight.multiply(BigDecimal.valueOf(nights));
     }
 
     public Long getUserId() {
         return userId;
     }
 
-    public void validateTotalGuest(int totalGuest){
-         if(totalGuest > this.maxGuests) throw  new MaxGuestException(this.maxGuests);
+    public void validateTotalGuest(int totalGuest) {
+        if (totalGuest > this.maxGuests)
+            throw new MaxGuestException(this.maxGuests);
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-
-
-    ///   GETTER AND SETTER
+    /// GETTER AND SETTER
     ///
-
-
-
-
 
     public String getTitle() {
         return title;
@@ -235,6 +233,10 @@ public class Property {
 
     public int getBedrooms() {
         return bedrooms;
+    }
+
+    public String getPropertyTypeName() {
+        return type != null ? type.name() : "N/A";
     }
 
     public void setBedrooms(int bedrooms) {
@@ -305,7 +307,6 @@ public class Property {
         this.propertyStatus = propertyStatus;
     }
 
-
     public void setRating(double rating) {
         this.rating = rating;
     }
@@ -333,7 +334,6 @@ public class Property {
                 maxGuests,
                 pricePerNight.toString(),
                 amenities != null ? String.join(", ", amenities.stream().map(Object::toString).toList()) : "N/A",
-                cancellationPolicy
-        );
+                cancellationPolicy);
     }
 }
