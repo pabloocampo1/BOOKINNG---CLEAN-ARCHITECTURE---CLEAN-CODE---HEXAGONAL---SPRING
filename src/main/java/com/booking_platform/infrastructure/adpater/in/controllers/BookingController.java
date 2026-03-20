@@ -1,5 +1,7 @@
 package com.booking_platform.infrastructure.adpater.in.controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.booking_platform.application.port.in.bookingUseCases.CompleteBookingUseCase;
+import com.booking_platform.application.port.in.bookingUseCases.FindGuestBookingsUseCase;
 import com.booking_platform.application.port.in.bookingUseCases.HostCancelBookingUseCase;
 import com.booking_platform.application.port.in.bookingUseCases.ProcessBookingWithPaymentUseCase;
 import com.booking_platform.application.service.BookingServices.CancelBookingService;
@@ -18,6 +21,7 @@ import com.booking_platform.infrastructure.rest.mapperRest.BookingMapperRest;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
@@ -29,15 +33,18 @@ public class BookingController {
 	private final CancelBookingService cancelBookingService;
 	private final HostCancelBookingUseCase hostCancelBookingUseCase;
 	private final CompleteBookingUseCase completeBooking;
+	private final FindGuestBookingsUseCase findGuestBookingsUseCase;
 
 	public BookingController(ProcessBookingWithPaymentUseCase ProcessBookingWithPaymentUseCase,
 			BookingMapperRest bookingMapperRest, CancelBookingService cancelBookingService,
-			HostCancelBookingUseCase hostCancelBookingUseCase, CompleteBookingUseCase completeBooking) {
+			HostCancelBookingUseCase hostCancelBookingUseCase, CompleteBookingUseCase completeBooking,
+			FindGuestBookingsUseCase findGuestBookingsUseCase) {
 		this.ProcessBookingWithPaymentUseCase = ProcessBookingWithPaymentUseCase;
 		this.bookingMapperRest = bookingMapperRest;
 		this.cancelBookingService = cancelBookingService;
 		this.hostCancelBookingUseCase = hostCancelBookingUseCase;
 		this.completeBooking = completeBooking;
+		this.findGuestBookingsUseCase = findGuestBookingsUseCase;
 	}
 
 	@PostMapping
@@ -75,6 +82,14 @@ public class BookingController {
 		this.completeBooking.execute(bookingId, currentUser);
 
 		return new ResponseEntity<>("Reserva marcada como completada", HttpStatus.OK);
+	}
+
+	@GetMapping("/my-bookings")
+	public ResponseEntity<List<BookingDtoResponse>> findGuestBookings(Authentication authentication) {
+		String currentUser = authentication.getName();
+		List<BookingDtoResponse> bookings = this.findGuestBookingsUseCase.execute(currentUser).stream()
+				.map(booking -> this.bookingMapperRest.toResponse(booking)).toList();
+		return new ResponseEntity<>(bookings, HttpStatus.OK);
 	}
 
 }

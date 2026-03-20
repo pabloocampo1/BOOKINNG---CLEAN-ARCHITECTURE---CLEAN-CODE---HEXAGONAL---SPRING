@@ -1,5 +1,6 @@
 package com.booking_platform.infrastructure.adpater.out;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -29,6 +30,12 @@ public class BookingAdpaterImp implements BookingRepository {
 	public Optional<Booking> findById(Long id) {
 
 		return this.bookingJpaRepository.findById(id).map(bookingEntity -> this.bookingMapper.toModel(bookingEntity));
+	}
+
+	@Override
+	public List<Booking> findByGuestId(Long guestId) {
+		return this.bookingJpaRepository.findByGuestUserId(guestId).stream()
+				.map(bookingEntity -> this.bookingMapper.toModel(bookingEntity)).toList();
 	}
 
 	@Override
