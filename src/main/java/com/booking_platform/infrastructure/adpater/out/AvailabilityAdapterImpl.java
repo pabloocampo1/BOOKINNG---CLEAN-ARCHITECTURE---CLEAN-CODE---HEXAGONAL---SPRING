@@ -17,9 +17,15 @@ public class AvailabilityAdapterImpl implements AvailabilityRepository {
     private final AvailabilityJpaRepository availabilityJpaRepository;
     private final AvailabilityMapper availabilityMapper;
 
-    public AvailabilityAdapterImpl(AvailabilityJpaRepository availabilityJpaRepository, AvailabilityMapper availabilityMapper) {
+    public AvailabilityAdapterImpl(AvailabilityJpaRepository availabilityJpaRepository,
+            AvailabilityMapper availabilityMapper) {
         this.availabilityJpaRepository = availabilityJpaRepository;
         this.availabilityMapper = availabilityMapper;
+    }
+
+    @Override
+    public void deleteByBookingId(Long bookingId) {
+        this.availabilityJpaRepository.deleteByBookingId(bookingId);
     }
 
     @Override
@@ -51,4 +57,3 @@ public class AvailabilityAdapterImpl implements AvailabilityRepository {
         this.availabilityJpaRepository.deleteById(id);
     }
 }
-

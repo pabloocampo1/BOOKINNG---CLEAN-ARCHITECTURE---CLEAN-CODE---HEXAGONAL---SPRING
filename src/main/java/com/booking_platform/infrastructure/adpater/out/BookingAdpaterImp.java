@@ -31,4 +31,9 @@ public class BookingAdpaterImp implements BookingRepository {
 		return this.bookingJpaRepository.findById(id).map(bookingEntity -> this.bookingMapper.toModel(bookingEntity));
 	}
 
+	@Override
+	public void deleteById(Long id) {
+		this.bookingJpaRepository.deleteById(id);
+	}
+
 }

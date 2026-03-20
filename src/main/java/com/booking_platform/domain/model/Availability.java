@@ -8,15 +8,17 @@ public class Availability {
     private Long propertyId;
     private LocalDate startDate;
     private LocalDate endDate;
+    private Long bookingId;
     private AvailabilityType availabilityType; // BLOCKED OR BOOKING
 
     public Availability(Long id, Long propertyId, LocalDate startDate, LocalDate endDate,
-            AvailabilityType availabilityType) {
+            AvailabilityType availabilityType, Long bookingId) {
         this.id = id;
         this.propertyId = propertyId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.availabilityType = availabilityType;
+        this.bookingId = bookingId;
     }
 
     public Availability() {
@@ -46,6 +48,14 @@ public class Availability {
 
     public Long getPropertyId() {
         return propertyId;
+    }
+
+    public Long getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(Long bookingId) {
+        this.bookingId = bookingId;
     }
 
     public void setPropertyId(Long propertyId) {

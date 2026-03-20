@@ -39,14 +39,17 @@ public class CreateNewBookingService implements CreateNewBookingUseCase {
 		this.validateUserRole(user, booking);
 		booking.initializeBooking(property, user);
 
-		// check availability and block dates
+		// check availability
 		this.checkAvailability(property, booking);
 		property.checkIfCanBooking();
-		Availability blockedAvailability = this.blockDateProperty(booking);
 
 		// persist data
-		this.availabilityRepository.save(blockedAvailability);
+
 		Booking createdBooking = this.bookingRepository.save(booking);
+
+		// block dates in availability
+		Availability blockedAvailability = this.blockDateProperty(createdBooking);
+		this.availabilityRepository.save(blockedAvailability);
 
 		return createdBooking;
 
@@ -66,6 +69,7 @@ public class CreateNewBookingService implements CreateNewBookingUseCase {
 		availability.setStartDate(booking.getCheckIn());
 		availability.setEndDate(booking.getCheckOut());
 		availability.setAvailabilityType(AvailabilityType.BOOKING);
+		availability.setBookingId(booking.getId());
 
 		return availability;
 

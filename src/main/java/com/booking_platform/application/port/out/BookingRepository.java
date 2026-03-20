@@ -10,4 +10,6 @@ public interface BookingRepository {
 
 	Optional<Booking> findById(Long id);
 
+	void deleteById(Long id);
+
 }

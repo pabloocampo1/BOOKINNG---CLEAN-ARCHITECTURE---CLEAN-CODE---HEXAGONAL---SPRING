@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.booking_platform.application.port.in.bookingUseCases.ProcessBookingWithPaymentUseCase;
+import com.booking_platform.application.service.BookingServices.CancelBookingService;
 import com.booking_platform.infrastructure.rest.dto.BookingDtoResponse;
 import com.booking_platform.infrastructure.rest.dto.CreateBookingWithPaymentDtoRequest;
 import com.booking_platform.infrastructure.rest.mapperRest.BookingMapperRest;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/v1/bookings")
@@ -21,11 +24,13 @@ public class BookingController {
 
 	private final ProcessBookingWithPaymentUseCase ProcessBookingWithPaymentUseCase;
 	private final BookingMapperRest bookingMapperRest;
+	private final CancelBookingService cancelBookingService;
 
 	public BookingController(ProcessBookingWithPaymentUseCase ProcessBookingWithPaymentUseCase,
-			BookingMapperRest bookingMapperRest) {
+			BookingMapperRest bookingMapperRest, CancelBookingService cancelBookingService) {
 		this.ProcessBookingWithPaymentUseCase = ProcessBookingWithPaymentUseCase;
 		this.bookingMapperRest = bookingMapperRest;
+		this.cancelBookingService = cancelBookingService;
 	}
 
 	@PostMapping
@@ -39,6 +44,14 @@ public class BookingController {
 								entity.payment(), authentication.getName()));
 
 		return new ResponseEntity<>(bookingDtoResponse, HttpStatus.CREATED);
+	}
+
+	@PutMapping("/{bookingId}/cancel")
+	public ResponseEntity<String> cancelBooking(@PathVariable Long bookingId, Authentication authentication) {
+		String currentUser = authentication.getName();
+		this.cancelBookingService.execute(bookingId, currentUser);
+
+		return new ResponseEntity<>("Reserva cancelada exitosamente,", HttpStatus.OK);
 	}
 
 }

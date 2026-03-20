@@ -22,10 +22,11 @@ public class Property {
     private int beds;
     private int bathrooms;
     private boolean isPublished;
+    private CancellationPolicy cancellationPolicy;
 
     private Set<Amenity> amenities;
     private List<String> houseRules;
-    private String cancellationPolicy;
+
     private List<String> photos;
 
     private PropertyStatus propertyStatus;
@@ -45,7 +46,7 @@ public class Property {
             int bathrooms,
             Set<Amenity> amenities,
             List<String> houseRules,
-            String cancellationPolicy,
+            CancellationPolicy cancellationPolicy,
             List<String> photos,
             double rating,
             Integer totalReviews) {
@@ -283,11 +284,11 @@ public class Property {
         this.houseRules = houseRules;
     }
 
-    public String getCancellationPolicy() {
+    public CancellationPolicy getCancellationPolicy() {
         return cancellationPolicy;
     }
 
-    public void setCancellationPolicy(String cancellationPolicy) {
+    public void setCancellationPolicy(CancellationPolicy cancellationPolicy) {
         this.cancellationPolicy = cancellationPolicy;
     }
 

@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "property")
@@ -29,7 +31,6 @@ public class PropertyEntity {
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "user_id")
     private UserEntity user;
 
-
     @Column(nullable = false)
     private String title;
 
@@ -39,6 +40,8 @@ public class PropertyEntity {
     @Enumerated(EnumType.STRING)
     private PropertyType type;
 
+    @Enumerated(EnumType.STRING)
+    private CancellationPolicy cancellationPolicy;
 
     @Embedded
     private Location location;
@@ -61,23 +64,22 @@ public class PropertyEntity {
     @Enumerated(EnumType.STRING)
     private PropertyStatus propertyStatus;
 
-
     @ElementCollection(targetClass = Amenity.class)
     @CollectionTable(name = "property_amenities", joinColumns = @JoinColumn(name = "property_id"))
     @Column(name = "amenity_name", length = 50)
     @Enumerated(EnumType.STRING)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Amenity> amenities;
-
 
     @ElementCollection
     @CollectionTable(name = "property_house_rules", joinColumns = @JoinColumn(name = "property_id"))
     @Column(name = "rule")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<String> houseRules;
-
-    private String cancellationPolicy;
 
     @ElementCollection
     @CollectionTable(name = "property_photos", joinColumns = @JoinColumn(name = "property_id"))
     @Column(name = "photo_url")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<String> photos;
 }

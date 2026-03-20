@@ -10,18 +10,18 @@ import java.util.List;
 
 public interface AvailabilityJpaRepository extends JpaRepository<AvailabilityEntity, Long> {
 
-    List<AvailabilityEntity> findAllByPropertyPropertyId(Long propertyId);
+        List<AvailabilityEntity> findAllByPropertyPropertyId(Long propertyId);
 
-    @Query("""
-            select (count(a) > 0) from AvailabilityEntity a
-            where a.property.propertyId = :propertyId
-              and a.startDate <= :endDate
-              and a.endDate >= :startDate
-            """)
-    boolean existsOverlappingRange(
-            @Param("propertyId") Long propertyId,
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate
-    );
+        @Query("""
+                        select (count(a) > 0) from AvailabilityEntity a
+                        where a.property.propertyId = :propertyId
+                          and a.startDate <= :endDate
+                          and a.endDate >= :startDate
+                        """)
+        boolean existsOverlappingRange(
+                        @Param("propertyId") Long propertyId,
+                        @Param("startDate") LocalDate startDate,
+                        @Param("endDate") LocalDate endDate);
+
+        void deleteByBookingId(Long bookingId);
 }
-

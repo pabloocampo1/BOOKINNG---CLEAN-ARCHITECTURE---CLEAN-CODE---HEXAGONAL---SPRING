@@ -16,6 +16,7 @@ public interface AvailabilityRepository {
 
     boolean existsOverlappingRange(Long propertyId, LocalDate startDate, LocalDate endDate);
 
+    void deleteByBookingId(Long bookingId);
+
     void deleteById(Long id);
 }
-
