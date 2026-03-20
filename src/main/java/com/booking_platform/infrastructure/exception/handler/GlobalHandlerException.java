@@ -124,10 +124,8 @@ public class GlobalHandlerException {
         Throwable mostSpecificCause = e.getMostSpecificCause();
         String message = mostSpecificCause.getMessage();
 
-        // Limpiamos el mensaje si Jackson le agrega texto técnico extra
         if (message != null && message.contains(":")) {
-            // A veces Jackson pone "Cannot construct instance... problem: El pais..."
-            // Esto saca solo lo que está después del último ":"
+
             message = message.substring(message.lastIndexOf(":") + 1).trim();
         }
 

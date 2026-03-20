@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.booking_platform.application.port.in.bookingUseCases.CompleteBookingUseCase;
 import com.booking_platform.application.port.in.bookingUseCases.HostCancelBookingUseCase;
 import com.booking_platform.application.port.in.bookingUseCases.ProcessBookingWithPaymentUseCase;
 import com.booking_platform.application.service.BookingServices.CancelBookingService;
@@ -27,14 +28,16 @@ public class BookingController {
 	private final BookingMapperRest bookingMapperRest;
 	private final CancelBookingService cancelBookingService;
 	private final HostCancelBookingUseCase hostCancelBookingUseCase;
+	private final CompleteBookingUseCase completeBooking;
 
 	public BookingController(ProcessBookingWithPaymentUseCase ProcessBookingWithPaymentUseCase,
 			BookingMapperRest bookingMapperRest, CancelBookingService cancelBookingService,
-			HostCancelBookingUseCase hostCancelBookingUseCase) {
+			HostCancelBookingUseCase hostCancelBookingUseCase, CompleteBookingUseCase completeBooking) {
 		this.ProcessBookingWithPaymentUseCase = ProcessBookingWithPaymentUseCase;
 		this.bookingMapperRest = bookingMapperRest;
 		this.cancelBookingService = cancelBookingService;
 		this.hostCancelBookingUseCase = hostCancelBookingUseCase;
+		this.completeBooking = completeBooking;
 	}
 
 	@PostMapping
@@ -64,6 +67,14 @@ public class BookingController {
 		this.hostCancelBookingUseCase.execute(bookingId, currentUser);
 
 		return new ResponseEntity<>("Reserva cancelada por el host y reembolso aplicado", HttpStatus.OK);
+	}
+
+	@PutMapping("/{bookingId}/complete")
+	public ResponseEntity<String> completeBooking(@PathVariable Long bookingId, Authentication authentication) {
+		String currentUser = authentication.getName();
+		this.completeBooking.execute(bookingId, currentUser);
+
+		return new ResponseEntity<>("Reserva marcada como completada", HttpStatus.OK);
 	}
 
 }

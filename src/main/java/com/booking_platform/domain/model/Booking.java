@@ -95,6 +95,19 @@ public class Booking {
         return java.time.temporal.ChronoUnit.DAYS.between(this.checkIn, this.checkOut);
     }
 
+    public boolean isReadyToBeCompleted() {
+        LocalDate today = LocalDate.now();
+
+        return !today.isBefore(this.checkOut);
+    }
+
+    public void markAsCompleted() {
+        if (!isReadyToBeCompleted()) {
+            throw new IllegalStateException("No se puede completar la reserva antes del: " + this.checkOut);
+        }
+        this.status = BookingStatus.COMPLETED;
+    }
+
     public Long getId() {
         return id;
     }
