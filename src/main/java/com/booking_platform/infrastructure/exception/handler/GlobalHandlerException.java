@@ -19,6 +19,7 @@ import com.booking_platform.domain.exceptions.UserException.PasswordUserExceptio
 import com.booking_platform.domain.exceptions.booking.FailedPaymentException;
 import com.booking_platform.domain.exceptions.booking.InvalidBookingDatesException;
 import com.booking_platform.domain.exceptions.booking.LimitGuestsException;
+import com.booking_platform.domain.exceptions.booking.UnauthorizedBookingAccessException;
 import com.booking_platform.domain.exceptions.property.AvailabilityRangeNotAvailableException;
 import com.booking_platform.domain.exceptions.property.InvalidLocationException;
 import com.booking_platform.domain.exceptions.property.NoAccessToManageProperties;
@@ -107,8 +108,8 @@ public class GlobalHandlerException {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException e) {
+    @ExceptionHandler({ UnauthorizedBookingAccessException.class, IllegalStateException.class })
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setTimestamp(LocalDateTime.now());
         errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
