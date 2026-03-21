@@ -72,17 +72,21 @@ public class Property {
     }
 
     public void addStar(int stars) {
-        if (stars < 0 || stars > 5) {
-            // create a new exception
+        if (stars < 0 || stars > 5)
             return;
-        }
 
-        double totalStars = (this.rating * this.totalReviews) + stars;
+        if (this.totalReviews == null)
+            this.totalReviews = 0;
+
+        double currentTotalPoints = this.rating * this.totalReviews;
+
+        double newTotalPoints = currentTotalPoints + stars;
+
         this.totalReviews++;
-        this.rating = this.rating / totalStars;
+
+        this.rating = newTotalPoints / this.totalReviews;
 
         this.rating = Math.round(this.rating * 10.0) / 10.0;
-
     }
 
     public void checkOwnerProperty(Long userId) {

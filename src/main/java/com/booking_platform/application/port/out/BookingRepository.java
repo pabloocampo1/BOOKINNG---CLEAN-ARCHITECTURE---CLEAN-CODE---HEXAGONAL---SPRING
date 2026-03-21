@@ -15,4 +15,6 @@ public interface BookingRepository {
 
 	void deleteById(Long id);
 
+	boolean existsCompletedBookingByGuestIdAndPropertyId(Long guestId, Long propertyId);
+
 }

@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.booking_platform.domain.model.BookingStatus;
 import com.booking_platform.infrastructure.persistence.entity.BookingEntity;
 
 public interface BookingJpaRepository extends JpaRepository<BookingEntity, Long> {
 
 	List<BookingEntity> findByGuestUserId(Long guestId);
+
+	boolean existsByGuest_UserIdAndProperty_PropertyIdAndStatus(Long guestId, Long propertyId, BookingStatus status);
 
 }

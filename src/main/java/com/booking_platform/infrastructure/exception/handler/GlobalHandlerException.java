@@ -23,6 +23,9 @@ import com.booking_platform.domain.exceptions.booking.UnauthorizedBookingAccessE
 import com.booking_platform.domain.exceptions.property.AvailabilityRangeNotAvailableException;
 import com.booking_platform.domain.exceptions.property.InvalidLocationException;
 import com.booking_platform.domain.exceptions.property.NoAccessToManageProperties;
+import com.booking_platform.domain.exceptions.review.DuplicateReviewException;
+import com.booking_platform.domain.exceptions.review.UnauthorizedOwnerReviewException;
+import com.booking_platform.domain.exceptions.review.UnauthorizedReviewException;
 import com.booking_platform.infrastructure.exception.ErrorResponse;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -108,7 +111,8 @@ public class GlobalHandlerException {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler({ UnauthorizedBookingAccessException.class, IllegalStateException.class })
+    @ExceptionHandler({ UnauthorizedBookingAccessException.class, IllegalStateException.class,
+            UnauthorizedReviewException.class, DuplicateReviewException.class, UnauthorizedOwnerReviewException.class })
     public ResponseEntity<ErrorResponse> handleIllegalStateException(Exception e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setTimestamp(LocalDateTime.now());
