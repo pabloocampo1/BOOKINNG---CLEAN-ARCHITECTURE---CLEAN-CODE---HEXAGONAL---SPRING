@@ -187,6 +187,13 @@ public class Property {
 
     /// GETTER AND SETTER
     ///
+    ///
+    ///
+    ///
+
+    public double getRating() {
+        return rating;
+    }
 
     public String getTitle() {
         return title;
