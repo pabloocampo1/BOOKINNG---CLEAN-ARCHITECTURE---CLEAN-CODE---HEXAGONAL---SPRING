@@ -210,4 +210,20 @@ public class PropertyModelTest {
     assertDoesNotThrow(() -> property.validateTotalGuest(2));
 
   }
+
+  @Test
+  @DisplayName("Deberia lanzar excepcion si algun dato de la propiedad es null")
+  void shouldThrowException_WhenPropertyDataIsNull() {
+    Property property = PropertyMother.createPropertyWitDataNull();
+
+    assertThrows(IllegalArgumentException.class, () -> property.validateInformation());
+  }
+
+  @Test
+  @DisplayName("Deberia lanzar excepcion si algun dato de la propiedad es null")
+  void shouldThrowException_WhenPropertyDataIsCorrect() {
+    Property property = PropertyMother.validProperty();
+
+    assertDoesNotThrow(() -> property.validateInformation());
+  }
 }
