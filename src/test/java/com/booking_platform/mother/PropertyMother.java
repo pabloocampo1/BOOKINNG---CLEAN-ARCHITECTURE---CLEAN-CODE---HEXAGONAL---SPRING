@@ -90,4 +90,30 @@ public class PropertyMother {
 
   }
 
+  public static Property validPropertyWithOutId() {
+
+    String title = "My Property";
+    String description = "This is my property";
+    PropertyType type = PropertyType.APARTMENT;
+    Location location = new Location("Country", "City", "Address");
+    BigDecimal pricePerNight = new BigDecimal("100");
+    Long userId = 123L;
+    int maxGuests = 4;
+    int bedrooms = 2;
+    int beds = 1;
+    int bathrooms = 1;
+    Set<Amenity> amenities = Set.of(Amenity.WIFI, Amenity.TV);
+    List<String> houseRules = List.of("No smoking", "No pets");
+    CancellationPolicy cancellationPolicy = CancellationPolicy.FLEXIBLE;
+    List<String> photos = List.of("photo1.jpg", "photo2.jpg");
+    double rating = 0.0;
+    Integer totalReviews = 0;
+
+    Property property = new Property(null, title, description, type, location, pricePerNight, maxGuests, bedrooms,
+        beds, userId, bathrooms, amenities, houseRules, cancellationPolicy, photos, rating, totalReviews);
+
+    return property;
+
+  }
+
 }
